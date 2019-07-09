@@ -32,7 +32,7 @@ public class Test2 {
 
     @RequestMapping(method = RequestMethod.GET, value = "/hi2", produces = "texp/plain")
     public @ResponseBody
-    String test() {
+    String callByBean() {
         service1.setId(11L);
         service1.setName("nameService-1");
         service1.setParamsToCall(Arrays.asList("Param-1.1", "Param-1.2", "Param-1.3"));
@@ -41,13 +41,15 @@ public class Test2 {
         service2.setName("nameService-2");
         service2.setParamsToCall(Arrays.asList("Param-2.1", "Param-2.2"));
 
-        int size = service1.getParamsToCall().size();
+        int size1 = service1.getParamsToCall().size();
+        int size2 = service2.getParamsToCall().size();
+
         Map map1 = new HashMap();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size1; i++) {
             map1.put(i, service1.getParamsToCall().get(i));
         }
         Map map2 = new HashMap();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size2; i++) {
             map2.put(i, service2.getParamsToCall().get(i));
         }
 
@@ -56,20 +58,20 @@ public class Test2 {
         step1.setServiceFrom(service1);
         step1.setServiceTo(service2);
         step1.setParamsServiceFrom(map1);
-        step1.setParamsServiceFrom(map2);
+        step1.setParamsServiceTo(map2);
 
         step2.setId(102L);
         step2.setServiceFrom(service1);
         step2.setServiceTo(service2);
         step2.setParamsServiceFrom(map1);
-        step2.setParamsServiceFrom(map2);
+        step2.setParamsServiceTo(map2);
 
         route.setId("1000");
         route.setSteps(Arrays.asList(step1, step2));
 
 
         return "route :  " +
-                "<p> id" + route.getId() +
+                "id" + route.getId() +
                 "<p> steps " + route.getSteps();
     }
 }
